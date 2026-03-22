@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Генератор изображений БАР | VK Mini App</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;padding:20px;margin:0}
+h1{color:#2c3e50;text-align:center;margin-bottom:30px}
+.container{max-width:1200px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:30px}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.card h2{color:#5b8dee;font-size:1.1rem;margin:0 0 15px 0;border-bottom:2px solid #e8eef5;padding-bottom:10px}
+canvas{border:2px solid #e8eef5;border-radius:8px;display:block;margin:10px auto;max-width:100%;height:auto}
+button{background:linear-gradient(135deg,#5b8dee,#8b5cf6);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;transition:transform 0.2s}
+button:hover{transform:translateY(-2px)}
+.info{background:#e8f4fd;border-left:4px solid #5b8dee;padding:12px;border-radius:4px;margin:10px 0;font-size:13px;color:#2c3e50}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡ Генератор изображений для VK Mini App "БАР"</h1>
+
+<div class="grid">
+<div class="card">
+<h2>576×576 — Универсальная иконка</h2>
+<canvas id="c576" width="576" height="576"></canvas>
+<button onclick="gen('c576',576)">Создать и скачать</button>
+<div class="info">PNG, для каталога и рекомендаций</div>
+</div>
+
+<div class="card">
+<h2>278×278 — Иконка для каталога</h2>
+<canvas id="c278" width="278" height="278"></canvas>
+<button onclick="gen('c278',278)">Создать и скачать</button>
+<div class="info">PNG, для сниппетов</div>
+</div>
+
+<div class="card">
+<h2>150×150 — Маленькая иконка</h2>
+<canvas id="c150" width="150" height="150"></canvas>
+<button onclick="gen('c150',150)">Создать и скачать</button>
+<div class="info">PNG, для уведомлений</div>
+</div>
+
+<div class="card">
+<h2>32×32 — Фавикон</h2>
+<canvas id="c32" width="32" height="32"></canvas>
+<button onclick="gen('c32',32)">Создать и скачать</button>
+<div class="info">PNG, макс 50 КБ</div>
+</div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+<h2>1120×630 — Большой сниппет</h2>
+<canvas id="c1120" width="1120" height="630"></canvas>
+<button onclick="genSnippet()">Создать и скачать</button>
+<div class="info">PNG, для превью приложения</div>
+</div>
+
+<div class="card">
+<h2>600×1200 — Скриншоты (3 шт)</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+<div>
+<canvas id="s1" width="600" height="1200"></canvas>
+<button onclick="genScreenshot(1)">Скриншот #1</button>
+</div>
+<div>
+<canvas id="s2" width="600" height="1200"></canvas>
+<button onclick="genScreenshot(2)">Скриншот #2</button>
+</div>
+<div>
+<canvas id="s3" width="600" height="1200"></canvas>
+<button onclick="genScreenshot(3)">Скриншот #3</button>
+</div>
+</div>
+<div class="info">JPG/PNG, отображаются в десктопной версии</div>
+</div>
+</div>
+
+<script>
+function gen(id,s){
+const c=document.getElementById(id),ctx=c.getContext('2d');
+const g=ctx.createLinearGradient(0,0,s,s);
+g.addColorStop(0,'#5b8dee');
+g.addColorStop(0.5,'#7c6fe5');
+g.addColorStop(1,'#8b5cf6');
+ctx.fillStyle=g;
+ctx.fillRect(0,0,s,s);
+
+// Рисуем волну (символ БАР)
+ctx.strokeStyle='rgba(255,255,255,0.3)';
+ctx.lineWidth=s*0.08;
+ctx.lineCap='round';
+ctx.beginPath();
+for(let x=0;x<=s;x+=2){
+const y=s/2+Math.sin(x*0.02)*s*0.15;
+x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+}
+ctx.stroke();
+
+// Центральный символ ⚡
+ctx.fillStyle='#fff';
+ctx.font=`bold ${s*0.35}px Arial`;
+ctx.textAlign='center';
+ctx.textBaseline='middle';
+ctx.fillText('⚡',s/2,s/2-s*0.05);
+
+// Текст "BAD" / "БАР"
+ctx.font=`bold ${s*0.12}px Arial`;
+ctx.fillText('BAR',s/2,s/2+s*0.25);
+
+download(c,`bar-icon-${s}x${s}.png`);
+}
+
+function genSnippet(){
+const c=document.getElementById('c1120'),ctx=c.getContext('2d');
+const g=ctx.createLinearGradient(0,0,0,630);
+g.addColorStop(0,'#1a1f2e');
+g.addColorStop(1,'#252d42');
+ctx.fillStyle=g;
+ctx.fillRect(0,0,1120,630);
+
+// Волна на фоне
+ctx.strokeStyle='rgba(91,141,238,0.2)';
+ctx.lineWidth=8;
+ctx.beginPath();
+for(let x=0;x<=1120;x+=3){
+const y=315+Math.sin(x*0.015)*80;
+x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+}
+ctx.stroke();
+
+// Заголовок
+ctx.fillStyle='#5b8dee';
+ctx.font='bold 58px Arial';
+ctx.textAlign='center';
+ctx.fillText('⚡ Биполярное аффективное расстройство',560,200);
+
+// Подзаголовок
+ctx.fillStyle='#e2e8f5';
+ctx.font='32px Arial';
+ctx.fillText('Информационная панель для студентов-медиков',560,270);
+
+// Характеристики
+ctx.fillStyle='#8a9ab8';
+ctx.font='24px Arial';
+ctx.fillText('Диагностика МКБ-11 • Фармакотерапия • Реабилитация',560,350);
+
+// Бейджи
+const badges=[
+{t:'BAR I',c:'#f59e0b'},
+{t:'BAR II',c:'#3b82f6'},
+{t:'Эпидемиология',c:'#10b981'},
+{t:'Критерии',c:'#8b5cf6'}
+];
+let bx=200;
+badges.forEach(b=>{
+ctx.fillStyle=b.c+'33';
+ctx.fillRect(bx,420,180,50);
+ctx.fillStyle=b.c;
+ctx.font='bold 18px Arial';
+ctx.fillText(b.t,bx+90,450);
+bx+=200;
+});
+
+download(c,'bar-snippet-1120x630.png');
+}
+
+function genScreenshot(n){
+const c=document.getElementById(`s${n}`),ctx=c.getContext('2d');
+const g=ctx.createLinearGradient(0,0,0,1200);
+g.addColorStop(0,'#0f1117');
+g.addColorStop(1,'#1a1f2e');
+ctx.fillStyle=g;
+ctx.fillRect(0,0,600,1200);
+
+// Шапка
+ctx.fillStyle='#5b8dee';
+ctx.font='bold 32px Arial';
+ctx.textAlign='center';
+ctx.fillText('⚡ БАР Дашборд',300,60);
+
+// Контент в зависимости от номера
+const yStart=120;
+if(n===1){
+// Фазы расстройства
+drawCard(ctx,40,yStart,520,180,'🔄 Фазы расстройства',['Маниакальная','Депрессивная','Смешанная','Эутимия']);
+drawCard(ctx,40,yStart+200,520,180,'📊 Эпидемиология',['BAR I: 45%','BAR II: 40%','Другие: 15%']);
+drawCard(ctx,40,yStart+400,520,180,'📈 Длительность',['Депрессия: 13 нед','Мания: 4 нед','Эутимия: 26 нед']);
+}else if(n===2){
+// Критерии и лечение
+drawCard(ctx,40,yStart,520,200,'✅ Критерии МКБ-11',['Эпизод настроения ≥1 нед','Снижение сна','Грандиозность','Скачка мыслей']);
+drawCard(ctx,40,yStart+220,520,200,'💊 Фармакотерапия',['Литий карбонат','Вальпроаты','Кветиапин','Ламотриджин']);
+drawCard(ctx,40,yStart+440,520,160,'⚠️ Важно',['Антидепрессанты','монотерапией','противопоказаны']);
+}else{
+// Реабилитация
+drawCard(ctx,40,yStart,520,250,'🏥 Этапы реабилитации',['1. Стабилизация','2. Психообразование','3. Психотерапия','4. Соц. реабилитация','5. Поддержка']);
+drawCard(ctx,40,yStart+270,520,180,'🎯 Цели лечения',['Профилактика рецидивов','Стабилизация настроения','Улучшение качества жизни']);
+}
+
+// Footer
+ctx.fillStyle='#8a9ab8';
+ctx.font='14px Arial';
+ctx.fillText('БАР — Медицинское образование 2026',300,1150);
+
+download(c,`bar-screenshot-${n}.png`);
+}
+
+function drawCard(ctx,x,y,w,h,title,items){
+ctx.fillStyle='#1a1f2e';
+ctx.fillRect(x,y,w,h);
+ctx.strokeStyle='#252d42';
+ctx.lineWidth=2;
+ctx.strokeRect(x,y,w,h);
+
+ctx.fillStyle='#5b8dee';
+ctx.font='bold 20px Arial';
+ctx.textAlign='left';
+ctx.fillText(title,x+15,y+30);
+
+ctx.fillStyle='#c0cce0';
+ctx.font='16px Arial';
+let ty=y+60;
+items.forEach(item=>{
+ctx.fillText('• '+item,x+15,ty);
+ty+=25;
+});
+}
+
+function download(c,name){
+c.toBlob(b=>{
+const a=document.createElement('a');
+a.href=URL.createObjectURL(b);
+a.download=name;
+a.click();
+URL.revokeObjectURL(a.href);
+},'image/png',0.92);
+}
+
+// Авто-генерация превью при загрузке
+window.onload=()=>{
+gen('c576',576);
+gen('c278',278);
+gen('c150',150);
+gen('c32',32);
+genSnippet();
+genScreenshot(1);
+genScreenshot(2);
+genScreenshot(3);
+};
+</script>
+</body>
+</html>
