@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Реабилитация эндокринных заболеваний — Информационная панель</title>
+<title>Биполярное аффективное расстройство — Информационная панель</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <style>
@@ -16,10 +16,10 @@ h1{font-size:1.4rem;color:#5b8dee;text-align:center;margin-bottom:20px;padding:1
 .phases{display:flex;flex-direction:column;gap:8px}
 .phase{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:#0f1117}
 .phase-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.diabetes .phase-icon{background:linear-gradient(135deg,#f59e0b,#ef4444)}
-.thyroid .phase-icon{background:linear-gradient(135deg,#3b82f6,#1e3a5f)}
-.obesity .phase-icon{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
-.adrenal .phase-icon{background:linear-gradient(135deg,#10b981,#059669)}
+.mania .phase-icon{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.depression .phase-icon{background:linear-gradient(135deg,#3b82f6,#1e3a5f)}
+.mixed .phase-icon{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
+.euthymia .phase-icon{background:linear-gradient(135deg,#10b981,#059669)}
 .phase-info h3{font-size:0.9rem;font-weight:600;color:#e2e8f5}
 .phase-info p{font-size:0.75rem;color:#8a9ab8;margin-top:2px}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -48,70 +48,113 @@ footer{text-align:center;font-size:0.72rem;color:#8a9ab8;margin-top:20px;padding
 </style>
 </head>
 <body>
-<h1>🩺 Реабилитация эндокринных заболеваний — Информационная панель</h1>
+<h1>⚡ Биполярное аффективное расстройство — Информационная панель</h1>
+
 <div class="grid">
-<div class="card">
-<h2>🔬 Основные нозологии</h2>
-<div class="phases">
-<div class="phase diabetes">
-<div class="phase-icon">🩸</div>
-<div class="phase-info"><h3>Сахарный диабет</h3><p>СД 1 и СД 2 типа, контроль гликемии</p></div>
+  <div class="card">
+    <h2>🔄 Фазы расстройства</h2>
+    <div class="phases">
+      <div class="phase mania">
+        <div class="phase-icon">☀️</div>
+        <div class="phase-info">
+          <h3>Маниакальная фаза</h3>
+          <p>Эйфория, снижение потребности во сне, скачка мыслей, грандиозность</p>
+        </div>
+      </div>
+      <div class="phase depression">
+        <div class="phase-icon">🌑</div>
+        <div class="phase-info">
+          <h3>Депрессивная фаза</h3>
+          <p>Сниженное настроение, ангедония, усталость, суицидальные мысли</p>
+        </div>
+      </div>
+      <div class="phase mixed">
+        <div class="phase-icon">⚡</div>
+        <div class="phase-info">
+          <h3>Смешанное состояние</h3>
+          <p>Одновременно симптомы мании и депрессии, высокий риск</p>
+        </div>
+      </div>
+      <div class="phase euthymia">
+        <div class="phase-icon">🌤️</div>
+        <div class="phase-info">
+          <h3>Эутимия (ремиссия)</h3>
+          <p>Стабильное настроение, нормальное функционирование</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Эпидемиология</h2>
+    <div class="stats">
+      <div class="stat"><div class="stat-value">2.4%</div><div class="stat-label">Распространённость в популяции</div></div>
+      <div class="stat"><div class="stat-value">BAR I</div><div class="stat-label">Полная мания + депрессия</div></div>
+      <div class="stat"><div class="stat-value">BAR II</div><div class="stat-label">Гипомания + депрессия</div></div>
+      <div class="stat"><div class="stat-value">~25 лет</div><div class="stat-label">Средний возраст начала</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>📈 Длительность фаз</h2>
+    <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>✅ Диагностические критерии МКБ-11</h2>
+    <div class="criteria">
+      <div class="criterion">Эпизод приподнятого/раздражительного настроения ≥1 недели</div>
+      <div class="criterion">Снижение потребности во сне без усталости</div>
+      <div class="criterion">Повышенная активность и целенаправленное поведение</div>
+      <div class="criterion">Грандиозные идеи или завышенная самооценка</div>
+      <div class="criterion">Скачка мыслей или субъективно ускоренное мышление</div>
+      <div class="criterion">Отвлекаемость на незначимые стимулы</div>
+      <div class="criterion">Рискованное поведение с потенциально тяжёлыми последствиями</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💊 Фармакотерапия</h2>
+    <div class="meds">
+      <div class="med"><span class="med-name">Литий карбонат</span><span class="med-badge first-line">1-я линия</span></div>
+      <div class="med"><span class="med-name">Вальпроевая кислота</span><span class="med-badge first-line">1-я линия</span></div>
+      <div class="med"><span class="med-name">Кветиапин</span><span class="med-badge first-line">1-я линия</span></div>
+      <div class="med"><span class="med-name">Ламотриджин</span><span class="med-badge second-line">2-я линия</span></div>
+      <div class="med"><span class="med-name">Арипипразол</span><span class="med-badge second-line">2-я линия</span></div>
+      <div class="med"><span class="med-name">Омега-3 жирные кислоты</span><span class="med-badge adjunct">Адъювант</span></div>
+    </div>
+    <div class="warning"><strong>⚠️ Важно</strong>Антидепрессанты монотерапией противопоказаны — риск индукции мании.</div>
+  </div>
+
+  <div class="card">
+    <h2>🏥 Реабилитационные этапы</h2>
+    <div class="rehab-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Стабилизация острого состояния</h4><p>Купирование симптомов, безопасность, подбор терапии</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Психообразование</h4><p>Обучение пациента и семьи, распознавание триггеров</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Психотерапия (КПТ, ИПТ)</h4><p>Когнитивно-поведенческая и межличностная терапия</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Социальная реабилитация</h4><p>Восстановление трудоспособности, социальных связей</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Поддерживающая терапия</h4><p>Долгосрочная профилактика рецидивов, мониторинг</p></div></div>
+    </div>
+  </div>
 </div>
-<div class="phase thyroid">
-<div class="phase-icon">🦋</div>
-<div class="phase-info"><h3>Щитовидная железа</h3><p>Гипо/гипертиреоз, АИТ</p></div>
-</div>
-<div class="phase obesity">
-<div class="phase-icon">⚖️</div>
-<div class="phase-info"><h3>Ожирение</h3><p>ИМТ > 30, метаболический синдром</p></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>📊 Эпидемиология</h2>
-<div class="stats">
-<div class="stat"><div class="stat-value">537 млн</div><div class="stat-label">Больных СД в мире</div></div>
-<div class="stat"><div class="stat-value">~10%</div><div class="stat-label">Взрослых в РФ</div></div>
-</div>
-<div class="chart-wrap"><canvas id="pieChart"></canvas></div>
-</div>
-<div class="card">
-<h2>📈 Длительность фаз реабилитации</h2>
-<div class="chart-wrap"><canvas id="barChart"></canvas></div>
-</div>
-</div>
-<div class="grid">
-<div class="card">
-<h2>✅ Принципы (МКФ)</h2>
-<div class="criteria">
-<div class="criterion">Комплексность и непрерывность</div>
-<div class="criterion">Индивидуальный план реабилитации</div>
-<div class="criterion">Обучение самоконтролю (Школа СД)</div>
-</div>
-</div>
-<div class="card">
-<h2>💊 Фармакотерапия</h2>
-<div class="meds">
-<div class="med"><span class="med-name">Метформин</span><span class="med-badge first-line">1-я линия</span></div>
-<div class="med"><span class="med-name">иНГЛТ-2 / аГПП-1</span><span class="med-badge first-line">1-я линия</span></div>
-<div class="med"><span class="med-name">Витамин D, Омега-3</span><span class="med-badge adjunct">Адъювант</span></div>
-</div>
-<div class="warning"><strong>⚠️ Важно</strong>Целевой HbA1c < 7% для большинства пациентов.</div>
-</div>
-<div class="card">
-<h2>🏥 Реабилитация</h2>
-<div class="rehab-steps">
-<div class="step"><div class="step-num">1</div><div class="step-content"><h4>Стабилизация</h4><p>Компенсация метаболизма</p></div></div>
-<div class="step"><div class="step-num">2</div><div class="step-content"><h4>Школа пациента</h4><p>Навыки самопомощи</p></div></div>
-<div class="step"><div class="step-num">3</div><div class="step-content"><h4>Поддержка</h4><p>Мониторинг и профилактика</p></div></div>
-</div>
-</div>
-</div>
-<footer>Эндокринология — Информационная панель | 2026</footer>
+
+<footer>БАР — Информационная панель для учебного процесса | Медицинское образование 2026</footer>
+
 <script>
-const pie=new Chart(document.getElementById('pieChart'),{type:'doughnut',data:{labels:['СД 2','СД 1','Другие'],datasets:[{data:[90,7,3],backgroundColor:['#f59e0b','#3b82f6','#10b981'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8a9ab8',font:{size:10}}}}}});
-const bar=new Chart(document.getElementById('barChart'),{type:'bar',data:{labels:['Диета','ЛФК','Обучение','Медикаменты'],datasets:[{label:'Длительность (нед)',data:[52,12,4,48],backgroundColor:['#3b82f6','#f59e0b','#8b5cf6','#10b981'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8a9ab8',font:{size:9}}},y:{ticks:{color:'#8a9ab8',font:{size:9}},grid:{color:'#252d42'}}}}});
-if(window.vkBridge){vkBridge.send('VKWebAppInit');}
+vk.bridge.send('VKWebAppInit');
+const pie = new Chart(document.getElementById('pieChart'),{
+  type:'doughnut',
+  data:{labels:['BAR I','BAR II','Циклотимия','Другие'],
+  datasets:[{data:[45,40,10,5],backgroundColor:['#f59e0b','#3b82f6','#8b5cf6','#10b981'],borderWidth:0}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8a9ab8',font:{size:10}}}}}
+});
+const bar = new Chart(document.getElementById('barChart'),{
+  type:'bar',
+  data:{labels:['Депрессия','Мания','Гипомания','Смешанная','Эутимия'],
+  datasets:[{label:'Средняя длительность (нед)',data:[13,4,3,6,26],backgroundColor:['#3b82f6','#f59e0b','#fbbf24','#8b5cf6','#10b981'],borderRadius:6}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8a9ab8',font:{size:9}}},y:{ticks:{color:'#8a9ab8',font:{size:9}},grid:{color:'#252d42'}}}}
+});
 </script>
 </body>
 </html>
