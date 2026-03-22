@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Реабилитация эндокринных заболеваний — Информационная панель</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#0f1117;color:#e2e8f5;min-height:100vh;padding:16px}
+h1{font-size:1.4rem;color:#5b8dee;text-align:center;margin-bottom:20px;padding:12px;background:linear-gradient(135deg,#1a1f2e,#252d42);border-radius:12px;border-left:4px solid #5b8dee}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.card{background:#1a1f2e;border-radius:12px;padding:18px;border:1px solid #252d42}
+.card h2{font-size:1rem;color:#5b8dee;margin-bottom:14px;border-bottom:1px solid #252d42;padding-bottom:8px}
+.phases{display:flex;flex-direction:column;gap:8px}
+.phase{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:#0f1117}
+.phase-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.diabetes .phase-icon{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.thyroid .phase-icon{background:linear-gradient(135deg,#3b82f6,#1e3a5f)}
+.obesity .phase-icon{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
+.adrenal .phase-icon{background:linear-gradient(135deg,#10b981,#059669)}
+.phase-info h3{font-size:0.9rem;font-weight:600;color:#e2e8f5}
+.phase-info p{font-size:0.75rem;color:#8a9ab8;margin-top:2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#0f1117;border-radius:8px;padding:12px;text-align:center}
+.stat-value{font-size:1.5rem;font-weight:700;color:#5b8dee}
+.stat-label{font-size:0.72rem;color:#8a9ab8;margin-top:2px}
+.chart-wrap{position:relative;height:200px}
+.criteria{display:flex;flex-direction:column;gap:6px}
+.criterion{display:flex;align-items:flex-start;gap:8px;padding:8px;background:#0f1117;border-radius:8px;font-size:0.8rem;color:#c0cce0}
+.criterion::before{content:"✓";color:#10b981;font-weight:700;flex-shrink:0;margin-top:1px}
+.meds{display:flex;flex-direction:column;gap:6px}
+.med{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#0f1117;border-radius:8px}
+.med-name{font-size:0.82rem;color:#e2e8f5}
+.med-badge{font-size:0.68rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.first-line{background:#1e3a5f;color:#5b8dee}
+.second-line{background:#1e2a1e;color:#10b981}
+.adjunct{background:#2a1e3a;color:#8b5cf6}
+.rehab-steps{display:flex;flex-direction:column;gap:6px;counter-reset:step}
+.step{display:flex;gap:10px;padding:10px;background:#0f1117;border-radius:8px;counter-increment:step}
+.step-num{width:24px;height:24px;background:#5b8dee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;color:#fff}
+.step-content h4{font-size:0.82rem;color:#e2e8f5;margin-bottom:2px}
+.step-content p{font-size:0.72rem;color:#8a9ab8}
+.warning{background:#2a1e1e;border:1px solid #ef4444;border-radius:8px;padding:12px;font-size:0.8rem;color:#fca5a5;margin-top:10px}
+.warning strong{display:block;margin-bottom:4px;color:#ef4444}
+footer{text-align:center;font-size:0.72rem;color:#8a9ab8;margin-top:20px;padding-top:12px;border-top:1px solid #252d42}
+</style>
+</head>
+<body>
+<h1>🩺 Реабилитация эндокринных заболеваний — Информационная панель</h1>
+<div class="grid">
+<div class="card">
+<h2>🔬 Основные нозологии</h2>
+<div class="phases">
+<div class="phase diabetes">
+<div class="phase-icon">🩸</div>
+<div class="phase-info"><h3>Сахарный диабет</h3><p>СД 1 и СД 2 типа, контроль гликемии</p></div>
+</div>
+<div class="phase thyroid">
+<div class="phase-icon">🦋</div>
+<div class="phase-info"><h3>Щитовидная железа</h3><p>Гипо/гипертиреоз, АИТ</p></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>📊 Эпидемиология</h2>
+<div class="stats">
+<div class="stat"><div class="stat-value">537 млн</div><div class="stat-label">Больных СД в мире</div></div>
+<div class="stat"><div class="stat-value">~10%</div><div class="stat-label">Взрослых в РФ</div></div>
+</div>
+<div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+</div>
+<div class="card">
+<h2>📈 Длительность фаз</h2>
+<div class="chart-wrap"><canvas id="barChart"></canvas></div>
+</div>
+</div>
+<div class="grid">
+<div class="card">
+<h2>✅ Принципы (МКФ)</h2>
+<div class="criteria">
+<div class="criterion">Комплексность коррекции</div>
+<div class="criterion">Непрерывность этапов</div>
+<div class="criterion">Индивидуализация плана</div>
+</div>
+</div>
+<div class="card">
+<h2>💊 Фармакотерапия</h2>
+<div class="meds">
+<div class="med"><span class="med-name">Метформин</span><span class="med-badge first-line">1-я линия</span></div>
+<div class="med"><span class="med-name">иНГЛТ-2</span><span class="med-badge first-line">1-я линия</span></div>
+</div>
+<div class="warning"><strong>⚠️ Важно</strong>Целевой HbA1c < 7% для большинства взрослых.</div>
+</div>
+<div class="card">
+<h2>🏥 Реабилитация</h2>
+<div class="rehab-steps">
+<div class="step"><div class="step-num">1</div><div class="step-content"><h4>Стабилизация</h4><p>Компенсация метаболизма</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><h4>Школа СД</h4><p>Обучение самоконтролю</p></div></div>
+</div>
+</div>
+</div>
+<footer>Эндокринология — Информационная панель | 2026</footer>
+<script>
+const pie=new Chart(document.getElementById('pieChart'),{type:'doughnut',data:{labels:['СД 2','СД 1','Другие'],datasets:[{data:[90,7,3],backgroundColor:['#f59e0b','#3b82f6','#10b981'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8a9ab8',font:{size:10}}}}}});
+const bar=new Chart(document.getElementById('barChart'),{type:'bar',data:{labels:['Диета','ЛФК','Обучение','Медикам.'],datasets:[{label:'Длительность (нед)',data:[52,12,4,48],backgroundColor:['#3b82f6','#f59e0b','#8b5cf6','#10b981'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8a9ab8',font:{size:9}}},y:{ticks:{color:'#8a9ab8',font:{size:9}},grid:{color:'#252d42'}}}}});
+if(window.vkBridge){vkBridge.send('VKWebAppInit');}
+</script>
+</body>
+</html>
