@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Биполярное аффективное расстройство — Информационная панель</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#0f1117;color:#e2e8f5;min-height:100vh;padding:16px}
@@ -157,6 +158,12 @@ const bar = new Chart(document.getElementById('barChart'),{
   datasets:[{label:'Средняя длительность (нед)',data:[13,4,3,6,26],backgroundColor:['#3b82f6','#f59e0b','#fbbf24','#8b5cf6','#10b981'],borderRadius:6}]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8a9ab8',font:{size:9}}},y:{ticks:{color:'#8a9ab8',font:{size:9}},grid:{color:'#252d42'}}}}
 });
+</script>
+  <script>
+// Инициализация VK Bridge для Mini App
+if (window.vkBridge) {
+  vkBridge.send('VKWebAppInit');
+}
 </script>
 </body>
 </html>
