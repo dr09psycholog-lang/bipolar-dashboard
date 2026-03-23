@@ -2,7 +2,7 @@
 <html lang="ru" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <title>БАР — Дашборд</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -706,6 +706,15 @@ a,button,[role="button"]{transition:color var(--transition),background var(--tra
 /* VK Bridge Init */
 if (typeof vkBridge !== 'undefined') {
   vkBridge.send('VKWebAppInit');
+  vkBridge.subscribe(function(e) {
+    if (e.detail && e.detail.type === 'VKWebAppUpdateConfig') {
+      var cfg = e.detail.data;
+      if (cfg.scheme) {
+        var isDark = cfg.scheme.indexOf('dark') !== -1 || cfg.scheme === 'space_gray' || cfg.scheme === 'vkcom_dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      }
+    }
+  });
 }
 
 /* NAV */
